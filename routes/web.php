@@ -46,4 +46,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/igrejas/{id}/destroy', 'IgrejaController@destroy')->name('igrejas.destroy');
     Route::post('/igrejas/fetch_data', 'IgrejaController@fetch_data')->name('igrejas.fetch');
 
+    Route::post('/membros/conectar/{igreja_id}', 'MembrosController@conectar')->name('membros.conectar');
+    Route::post('/membros/desconectar/{igreja_id}', 'MembrosController@desconectar')->name('membros.desconectar');
+
 });

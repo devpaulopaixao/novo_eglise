@@ -13,6 +13,16 @@ class CelulaController extends Controller
         $this->middleware('permission:celula-create', ['only' => ['create', 'store']]);
         $this->middleware('permission:celula-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:celula-delete', ['only' => ['destroy']]);
+
+        //Check if user as member of any church
+        $this->middleware(function ($request, $next) {
+            
+            if(!$request->session()->has('igreja_id')){
+                return redirect()->route('home');
+            }
+
+            return $next($request);
+        });
     }
 
     public function filter(Request $request)

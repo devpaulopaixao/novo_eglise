@@ -25,5 +25,12 @@
 
 <section class="content">
 
+    @if (\Request::session()->get('igreja_id'))
+        <label>É MEMBRO</label>
+    @else
+        <label>NÃO É MEMBRO</label>
+    @endif
+
 </section>
+
 @endsection

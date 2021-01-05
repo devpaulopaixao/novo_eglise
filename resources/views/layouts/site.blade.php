@@ -100,7 +100,8 @@
                         @if(\Auth::user()->hasAnyRole(['SuperAdmin','Admin']))
                             @include('layouts.menus.seguranca')
                         @endif
-
+                        
+                        @if (\Request::session()->get('igreja_id'))
                         <li class="nav-item">
                             <a href="{{route('celulas')}}"
                                 class="nav-link {{ in_array(_route(),['celulas']) ? 'active' : '' }}">
@@ -108,6 +109,7 @@
                                 <p>Células</p>
                             </a>
                         </li>
+                        @endif
 
                         <li class="nav-item">
                             <a href="{{route('igrejas')}}"
