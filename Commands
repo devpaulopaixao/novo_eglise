@@ -1,0 +1,35 @@
+#GIT INIT REPO
+git init
+git add .
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/devpaulopaixao/novo_eglise.git
+git push -u origin main
+
+#GIT NEW COMMITS
+git add .
+git commit -m "[description]"
+git push
+
+#Run queue without PM2
+nohup php artisan queue:work --daemon > storage/logs/laravel-queue.log &
+//nohup php artisan queue:work --daemon > /dev/null 2>&1 &
+
+#Run queue with PM2
+pm2 start laravel-queue-worker.yml
+
+#show logs from PM2 service
+pm2 logs laravel-queue-worker
+
+#compact system folder
+tar -zcvf pasta27052020.tar.gz pasta/
+
+#create model with migration,controller and seeder
+php artisan make:model ModelName -mcs --resource
+
+#specific class seeding
+php artisan db:seed --class=CentroDeCustosSeeder
+php artisan db:seed --class=PermissionTableSeeder
+
+#run specific migration
+php artisan migrate --path=/database/migrations/2020_07_20_102231_create_horarios_table.php
