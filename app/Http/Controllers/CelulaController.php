@@ -32,6 +32,9 @@ class CelulaController extends Controller
                 if ($request->search) {
                     $query->where('nome', 'like', "%{$request->search}%");
                 }
+                if($request->session()->has('igreja_id')){
+                    $query->where('igreja_id', $request->session()->get('igreja_id'));
+                }
             })->orderBy('created_at', 'DESC');
         return $query;
     }
@@ -79,7 +82,8 @@ class CelulaController extends Controller
             }
 
             Auth::user()->celulas()->create([
-                'nome' => $request->nome
+                'nome' => $request->nome,
+                'igreja_id' => $request->session()->get('igreja_id')
             ]);
 
             $data = $this->filter($request)

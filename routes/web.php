@@ -24,6 +24,7 @@ Route::post('/registrar', 'RegistrarController@registrar')->name('registrar');
 
 Route::group(['middleware' => ['auth']], function() {
     Route::get('/home', 'HomeController@index')->name('home');
+    Route::post('/cadastrar-igreja', 'HomeController@cadastrarIgreja')->name('home.cadastrar-igreja');
 
     Route::get('/perfil', 'ProfileController@index')->name('perfil');
     Route::post('/perfil/atualizar', 'ProfileController@update')->name('perfil.atualizar');
@@ -33,6 +34,9 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::resource('usuarios','UserController');
     Route::post('usuariosdoperfil','UserController@getUsersByRole')->name('usuarios.com.perfil');
+
+    Route::get('/igreja', 'IgrejaController@igreja')->name('igreja');
+    Route::post('/igreja-configurar', 'IgrejaController@configurar')->name('igreja.configurar');
 
     Route::get('/celulas', 'CelulaController@index')->name('celulas');
     Route::post('/celulas/store', 'CelulaController@store')->name('celulas.store');
@@ -46,7 +50,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/igrejas/{id}/destroy', 'IgrejaController@destroy')->name('igrejas.destroy');
     Route::post('/igrejas/fetch_data', 'IgrejaController@fetch_data')->name('igrejas.fetch');
 
-    Route::post('/membros/conectar/{igreja_id}', 'MembrosController@conectar')->name('membros.conectar');
-    Route::post('/membros/desconectar/{igreja_id}', 'MembrosController@desconectar')->name('membros.desconectar');
+    Route::get('/membros/conectar/{igreja_id}', 'MembrosController@conectar')->name('membros.conectar');
+    Route::get('/membros/desconectar/{igreja_id}', 'MembrosController@desconectar')->name('membros.desconectar');
 
 });

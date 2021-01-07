@@ -25,4 +25,22 @@ class Igreja extends Model
     {
         return $this->hasOne('App\Endereco','igreja_id', 'id');
     }
+
+    public function membros(){
+        return $this->hasMany('App\Membros', 'igreja_id', 'id');
+    }
+
+    public function celulas(){
+        return $this->hasMany('App\Celula', 'igreja_id', 'id');
+    }
+
+    public function configuracao()
+    {
+        return $this->hasOne('App\ConfiguracaoIgreja','igreja_id', 'id');
+    }
+
+    public function menus()
+    {
+        return $this->hasMany('App\Menu','igreja_id', 'id');
+    }
 }

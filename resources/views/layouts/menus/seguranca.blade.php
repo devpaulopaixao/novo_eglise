@@ -9,17 +9,19 @@
 
     <ul class="nav nav-treeview">
 
-        @if(\Auth::user()->hasRole('SuperAdmin'))
-        <li class="nav-item">
-            <a href="{{route('perfis.index')}}" class="nav-link {{ in_array(_route(),_perfis()) ? 'active' : '' }}">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Perfis de acesso</p>
-            </a>
-        </li>
+        @if (\Auth::user()->hasRole('SuperAdmin'))
+            <li class="nav-item">
+                <a href="{{ route('perfis.index') }}"
+                    class="nav-link {{ in_array(_route(), _perfis()) ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Perfis de acesso</p>
+                </a>
+            </li>
         @endif
 
         <li class="nav-item">
-            <a href="{{route('usuarios.index')}}" class="nav-link {{ in_array(_route(),_usuarios()) ? 'active' : '' }}">
+            <a href="{{ route('usuarios.index') }}"
+                class="nav-link {{ in_array(_route(), _usuarios()) ? 'active' : '' }}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Usuários</p>
             </a>

@@ -69,6 +69,47 @@ class IgrejaController extends Controller
         ]);
     }
 
+    public function igreja(Request $request)
+    {
+
+        $igreja = Igreja::find($request->session()->get('igreja_id'));
+        $configuracao = $igreja->configuracao()->get();
+        $endereco = $igreja->endereco()->get();
+        $menus = $igreja->menus()->get();
+
+        return view('admin.igreja', compact('igreja', 'configuracao', 'endereco', 'menus'));
+    }
+
+    public function configurar(Request $request)
+    {
+
+        try {
+
+            //dd($request->all());
+
+            $igreja = Igreja::find($request->session()->get('igreja_id'));
+
+            //$igreja->configuracao()->delete();
+            $igreja->configuracao()->update(
+                $request->except('_token', 'cep', 'rua', 'numero', 'complemento', 'bairro', 'cidade', 'estado')
+            );
+
+            $igreja->endereco()->update([
+                "cep" => $request->cep,
+                "rua" => $request->rua,
+                "numero" => $request->numero,
+                "complemento" => $request->complemento,
+                "bairro" => $request->bairro,
+                "cidade" => $request->cidade,
+                "estado" => $request->estado
+            ]);
+        } catch (\Exception $e) {
+            //nothing
+        }
+
+        return redirect()->route('igreja');
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -97,7 +138,7 @@ class IgrejaController extends Controller
                 'complemento' => $request->complemento,
                 'bairro' => $request->bairro,
                 'cidade' => $request->cidade,
-                'estado' => $request->estado
+                'estado' => $request->estado,
             ]);
 
             $data = $this->filter($request)
@@ -140,7 +181,7 @@ class IgrejaController extends Controller
                 'complemento' => $request->complemento,
                 'bairro' => $request->bairro,
                 'cidade' => $request->cidade,
-                'estado' => $request->estado
+                'estado' => $request->estado,
             ]);
 
             $data = $this->filter($request)

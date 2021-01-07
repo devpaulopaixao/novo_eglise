@@ -77,8 +77,12 @@
                         <img src="{{Auth::user()->avatar_blob}}" class="img-circle elevation-2" alt="User Image">
                         @endif
                     </div>
-                    <div class="info">
-                        <a href="#" class="d-block">{{\Auth::user()->name}}</a>
+                    <div class="info" style="max-height: 48px;">                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a href="#" class="d-block text-wrap">{{\Auth::user()->name}}</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -91,33 +95,36 @@
                             <a href="{{route('home')}}"
                                 class="nav-link {{ in_array(_route(),_home()) ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-home"></i>
-                                <p>
-                                    Home
-                                </p>
+                                <p>Home</p>
                             </a>
                         </li>
 
                         @if(\Auth::user()->hasAnyRole(['SuperAdmin','Admin']))
                             @include('layouts.menus.seguranca')
+
+                            <!--<li class="nav-item">
+                                <a href="{{route('igrejas')}}"
+                                    class="nav-link {{ in_array(_route(),['igrejas']) ? 'active' : '' }}">
+                                    <i class="fas fa-church"></i>
+                                    <p>Igrejas</p>
+                                </a>
+                            </li>-->
                         @endif
                         
                         @if (\Request::session()->get('igreja_id'))
+
+                        @if(\Auth::user()->hasRole('Admin'))
+                            @include('layouts.menus.admin')
+                        @endif
+
                         <li class="nav-item">
                             <a href="{{route('celulas')}}"
                                 class="nav-link {{ in_array(_route(),['celulas']) ? 'active' : '' }}">
-                                <i class="fas fa-user-friends"></i>
+                                <i class="nav-icon fas fa-user-friends"></i>
                                 <p>Células</p>
                             </a>
                         </li>
                         @endif
-
-                        <li class="nav-item">
-                            <a href="{{route('igrejas')}}"
-                                class="nav-link {{ in_array(_route(),['igrejas']) ? 'active' : '' }}">
-                                <i class="fas fa-church"></i>
-                                <p>Igrejas</p>
-                            </a>
-                        </li>
 
                     </ul>
 
