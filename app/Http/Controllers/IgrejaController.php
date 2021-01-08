@@ -75,7 +75,7 @@ class IgrejaController extends Controller
         $igreja = Igreja::find($request->session()->get('igreja_id'));
         $configuracao = $igreja->configuracao()->get();
         $endereco = $igreja->endereco()->get();
-        $menus = $igreja->menus()->get();
+        $menus = $igreja->menus()->where('menu_id',null)->orderBy('ordem','ASC')->get();
 
         return view('admin.igreja', compact('igreja', 'configuracao', 'endereco', 'menus'));
     }

@@ -15,5 +15,6 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
         $this->call(ClientSeeder::class);
         $this->call(IgrejaSeeder::class);
+        $this->call(MenuSeeder::class);
     }
 }

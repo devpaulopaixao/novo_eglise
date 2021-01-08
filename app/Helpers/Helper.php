@@ -1,5 +1,6 @@
 <?php
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 
 function _home(){
     return array(
@@ -32,6 +33,10 @@ function _usuarios(){
      'usuarios.create',
      'usuarios.edit'
  );
+}
+
+function getIgreja(Request $request){
+    return \App\Igreja::find($request->session()->get('igreja_id'));
 }
 
 function onlyNumbers($value)

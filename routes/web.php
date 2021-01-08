@@ -53,4 +53,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/membros/conectar/{igreja_id}', 'MembrosController@conectar')->name('membros.conectar');
     Route::get('/membros/desconectar/{igreja_id}', 'MembrosController@desconectar')->name('membros.desconectar');
 
+    Route::post('/menus/create', 'MenusController@create')->name('menus.create');
+    Route::post('/menus/update', 'MenusController@update')->name('menus.update');
+    Route::get('/menus/{id}/destroy', 'MenusController@destroy')->name('menus.destroy');
+
 });

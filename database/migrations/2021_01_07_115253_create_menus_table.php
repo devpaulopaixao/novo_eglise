@@ -22,8 +22,8 @@ class CreateMenusTable extends Migration
             $table->unsignedBigInteger('menu_id')->nullable();
             $table->foreign('menu_id')->references('id')->on('menus');
 
-            $table->integer('nivel')->default(1);
-            $table->integer('ordem');
+            //$table->integer('nivel')->default(1);
+            $table->integer('ordem')->default(1);
             $table->string('titulo');
             $table->string('url')->nullable();
             $table->string('target')->nullable()->comment('_blank|_self|_parent|_top|framename');
