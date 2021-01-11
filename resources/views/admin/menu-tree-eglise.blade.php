@@ -19,10 +19,10 @@
                         <ul>
                             @foreach($menu->submenus()->get() as $submenu)
                                 <li>
-                                    <div><span><i class="icon-minus-sign"></i> {{$submenu->titulo}}</span>
+                                    <div><span><i class="icon-minus-sign"></i> {{"$submenu->ordem - $submenu->titulo"}}</span>
                                         <div class="float-right">
                                             <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-create-submenu" data-id="{{$submenu->id}}"><i class="fa fa-plus"></i> Submenu</a>
-                                            <a class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-edit-submenu" data-id="{{$submenu->id}}" data-nome="{{$submenu->nome}}" data-link="{{$submenu->link}}" data-ordem="{{$submenu->ordem}}" data-id="{{$submenu->id_menu}}"><i class="fa fa-edit"></i> Submenu</a>
+                                            <a class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-edit-submenu" data-id="{{$submenu->id}}" data-menu_id="{{$submenu->menu_id}}" data-titulo="{{$submenu->titulo}}" data-url="{{$submenu->url}}" data-ordem="{{$submenu->ordem}}"><i class="fa fa-edit"></i> Submenu</a>
                                             <a class="btn btn-danger btn-sm delete" href="#" data-id="{{$submenu->id}}" data-titulo="{{$submenu->titulo}}"><i class="fa fa-trash"></i> Submenu</a>
                                         </div>
                                     </div>

@@ -60,7 +60,10 @@ class MenusController extends Controller
     public function destroy(Request $request, $id)
     {
         try {
-            Menu::where('id', $id)->delete();
+
+            $menu = Menu::find($id);
+            $menu->submenus()->delete();
+            $menu->delete();
 
             return response()->json([
                 'message' => 'Menu excluído com sucesso!',

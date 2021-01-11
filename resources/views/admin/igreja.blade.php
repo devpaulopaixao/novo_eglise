@@ -179,6 +179,43 @@
                 modal.find('.modal-body input[name=menu_id]').val(button.data('id'));
             });
 
+            $("form[id='edit-submenu']").on('submit', function(e) {
+                e.preventDefault();
+                menu_validate($(this));
+                var formData = new FormData(this);
+
+                if (!$(this).valid()) {
+                    e.stopPropagation();
+                } else {
+                    $.ajax({
+                        url: "{{ route('menus.update') }}",
+                        type: 'POST',
+                        data: formData,
+                        success: function(data) {
+                            // handle success response
+                            $('#modal-edit-submenu').modal('hide');
+                            $("form[id='edit-submenu']").validate().resetForm();
+                            $("form[id='edit-submenu']")[0].reset();
+                            $('.site-menu').html(data.html);
+
+                            Toast.fire({
+                                type: 'success',
+                                title: 'Menu atualizado com sucesso!'
+                            });
+                        },
+                        error: function(data) {
+                            // handle error response
+                            Toast.fire({
+                                type: 'error',
+                                title: 'Erro ao atualizar o menu. Contacte o suporte!'
+                            });
+                        },
+                        contentType: false,
+                        processData: false
+                    });
+                }
+            });
+
             $('#modal-edit-submenu').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget);
                 var modal = $(this);
@@ -216,7 +253,7 @@
                                 Toast.fire({
                                     type: 'success',
                                     title: (data.message) ? data.message :
-                                        'Atributo excluído com sucesso!'
+                                        'Menú excluído com sucesso!'
                                 });
                             },
                             error: function(data) {
@@ -261,7 +298,7 @@
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Informações básicas</h3>
+                <h3 class="card-title"><i class="nav-icon fas fa-info-circle"></i> Informações básicas</h3>
             </div>
             <form action="{{ route('igreja.configurar') }}" method="POST" autocomplete="off">
                 @csrf
@@ -340,7 +377,7 @@
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Hierarquia de menus</h3>
+                <h3 class="card-title"><i class="nav-icon fas fa-sort-numeric-down"></i>  Hierarquia de menus</h3>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -387,7 +424,7 @@
                             <div class="col-xs-6 col-sm-12 col-md-2">
                                 <div class="form-group">
                                     <strong>Ordem:</strong>
-                                    <input type="text" class="form-control" name="ordem">
+                                    <input type="text" class="form-control" name="ordem" onkeyup="fnc_onlynumber(this)">
                                 </div>
                             </div>
 
@@ -448,7 +485,7 @@
                             <div class="col-xs-6 col-sm-12 col-md-2">
                                 <div class="form-group">
                                     <strong>Ordem:</strong>
-                                    <input type="text" class="form-control" name="ordem">
+                                    <input type="text" class="form-control" name="ordem" onkeyup="fnc_onlynumber(this)">
                                 </div>
                             </div>
 
@@ -509,7 +546,7 @@
                             <div class="col-xs-6 col-sm-12 col-md-2">
                                 <div class="form-group">
                                     <strong>Ordem:</strong>
-                                    <input type="text" class="form-control" name="ordem">
+                                    <input type="text" class="form-control" name="ordem" onkeyup="fnc_onlynumber(this)">
                                 </div>
                             </div>
 
@@ -535,4 +572,66 @@
         <!-- /.modal-dialog -->
     </div>
     <!-- end create submenu -->
+
+    <!-- start edit submenu -->
+    <div class="modal fade" id="modal-edit-submenu" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <form method="POST" role="form" novalidate="novalidate" id="edit-submenu" autocomplete="off">
+                    @csrf
+                    <div class="modal-header">
+                        <h4 class="modal-title">Novo submenu</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+
+                            <input type="hidden" name="id">
+                            <input type="hidden" name="menu_id">
+
+                            <div class="col-xs-6 col-sm-12 col-md-12">
+                                <div class="form-group">
+                                    <strong>Titulo:</strong>
+                                    <input type="text" class="form-control" name="titulo"
+                                        placeholder="Informe o título do submenu" required>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-sm-12 col-md-10">
+                                <div class="form-group">
+                                    <strong>Link:</strong>
+                                    <input type="text" class="form-control" name="url" placeholder="Informe o link do submenu">
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-sm-12 col-md-2">
+                                <div class="form-group">
+                                    <strong>Ordem:</strong>
+                                    <input type="text" class="form-control" name="ordem" onkeyup="fnc_onlynumber(this)">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="btn-group botao float-right" role="group">
+                            <button type="button" class="btn btn-sm btn-danger badge-pill" data-dismiss="modal">
+                                <i class="fas fa-times"></i>&nbsp;Cancelar
+                            </button>
+                        </div>
+                        <div class="btn-group botao float-right" role="group">
+                            <button type="submit" id="submit" class="btn btn-sm btn-primary badge-pill">
+                                <i class="far fa-save"></i>&nbsp;Salvar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- end edit submenu -->
 @endsection
