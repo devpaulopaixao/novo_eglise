@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Igreja;
 use Illuminate\Http\Request;
 
 class SiteController extends Controller
@@ -11,14 +12,19 @@ class SiteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function inicio()
+    public function inicio($url)
     {
-        return view('inicio');
-    }
+        $igreja = getIdIgrejaByUrl($url);
 
-    public function registrar()
-    {
-        return view('registre-se');
+        if(isset($igreja)){
+            $config = $igreja->configuracao()->get();
+
+            return view('layouts.templates.template' . $config[0]->template_id . '.index', compact('igreja','config'));
+
+        }else{
+            return response()->view('errors.404', [], 404);
+        }
+
     }
 
 }

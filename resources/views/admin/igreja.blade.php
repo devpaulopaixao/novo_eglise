@@ -1,9 +1,69 @@
 @extends('layouts.site')
 
-@section('title', 'Project Manager | Home')
+@section('title', 'Configurar igreja')
 
     @push('script')
         <link rel="stylesheet" href="{{ asset('plugins/treeview/treeview.css') }}">
+        <style>
+            /*Profile Pic Start*/
+            .picture-container {
+                position: relative;
+                cursor: pointer;
+                text-align: center;
+            }
+
+            .picture {
+                width: 106px;
+                height: 106px;
+                background-color: #999999;
+                border: 4px solid #CCCCCC;
+                color: #FFFFFF;
+                border-radius: 50%;
+                margin: 0px auto;
+                overflow: hidden;
+                transition: all 0.2s;
+                -webkit-transition: all 0.2s;
+            }
+
+            .picture:hover {
+                border-color: #2ca8ff;
+            }
+
+            .content.ct-wizard-green .picture:hover {
+                border-color: #05ae0e;
+            }
+
+            .content.ct-wizard-blue .picture:hover {
+                border-color: #3472f7;
+            }
+
+            .content.ct-wizard-orange .picture:hover {
+                border-color: #ff9500;
+            }
+
+            .content.ct-wizard-red .picture:hover {
+                border-color: #ff3b30;
+            }
+
+            .picture input[type="file"] {
+                cursor: pointer;
+                display: block;
+                height: 100%;
+                left: 0;
+                opacity: 0 !important;
+                position: absolute;
+                top: 0;
+                width: 100%;
+            }
+
+            .picture-src {
+                width: 100%;
+
+            }
+
+            /*Profile Pic End*/
+
+        </style>
         <script src="{{ asset('plugins/jquery-mask/jquery.mask.min.js') }}"></script>
         <script>
             var Toast = Swal.mixin({
@@ -272,6 +332,28 @@
                 });
             });
 
+            $("#logotipo").change(function() {
+                let input = this;
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#logotipoPreview').attr('src', e.target.result).fadeIn('slow');
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            });
+
+            $("#favicon").change(function() {
+                let input = this;
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#faviconPreview').attr('src', e.target.result).fadeIn('slow');
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            });
+
         </script>
     @endpush
 
@@ -300,9 +382,35 @@
             <div class="card-header">
                 <h3 class="card-title"><i class="nav-icon fas fa-info-circle"></i> Informações básicas</h3>
             </div>
-            <form action="{{ route('igreja.configurar') }}" method="POST" autocomplete="off">
+            <form action="{{ route('igreja.configurar') }}" method="POST" autocomplete="off" enctype="multipart/form-data">
                 @csrf
                 <div class="card-body">
+
+                    <div class="row d-flex justify-content-center pb-4">
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+                            <div class="picture-container">
+                                <div class="picture">
+                                    <img src="{{ isset($configuracao[0]->logotipo) ? $configuracao[0]->logotipo : '/img/no-image.png'}}"
+                                        class="picture-src" id="logotipoPreview" title="">
+                                    <input type="file" name="logotipo" id="logotipo" class="">
+                                </div>
+                                <h6 class="">Logotipo da igreja</h6>
+
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+                            <div class="picture-container">
+                                <div class="picture">
+                                    <img src="{{ isset($configuracao[0]->favicon) ? $configuracao[0]->favicon : '/img/no-image.png'}}"
+                                        class="picture-src" id="faviconPreview" title="">
+                                    <input type="file" name="favicon" id="favicon" class="">
+                                </div>
+                                <h6 class="">Fav Icon</h6>
+
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row">
 
                         <div class="col-xs-6 col-sm-12 col-md-4">
@@ -377,7 +485,7 @@
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title"><i class="nav-icon fas fa-sort-numeric-down"></i>  Hierarquia de menus</h3>
+                <h3 class="card-title"><i class="nav-icon fas fa-sort-numeric-down"></i> Hierarquia de menus</h3>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -540,7 +648,8 @@
                             <div class="col-xs-6 col-sm-12 col-md-10">
                                 <div class="form-group">
                                     <strong>Link:</strong>
-                                    <input type="text" class="form-control" name="url" placeholder="Informe o link do submenu">
+                                    <input type="text" class="form-control" name="url"
+                                        placeholder="Informe o link do submenu">
                                 </div>
                             </div>
                             <div class="col-xs-6 col-sm-12 col-md-2">
@@ -602,7 +711,8 @@
                             <div class="col-xs-6 col-sm-12 col-md-10">
                                 <div class="form-group">
                                     <strong>Link:</strong>
-                                    <input type="text" class="form-control" name="url" placeholder="Informe o link do submenu">
+                                    <input type="text" class="form-control" name="url"
+                                        placeholder="Informe o link do submenu">
                                 </div>
                             </div>
                             <div class="col-xs-6 col-sm-12 col-md-2">

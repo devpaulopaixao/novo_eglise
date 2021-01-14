@@ -20,7 +20,7 @@ class RegistrarController extends Controller
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email',
                 'cpf' => 'required|cpf|unique:users,cpf',
-                'genre' => 'required',
+                //'genre' => 'required',
                 //'cell' => 'required',
                 //'phone' => 'required',
                 'cep' => 'required',
@@ -91,7 +91,7 @@ class RegistrarController extends Controller
 
             if (Auth::loginUsingId($user->id, true)) {
                 // Authentication passed...
-                return redirect()->intended('home');
+                return redirect()->intended(route('home'));
             }
 
         } catch (Exception $e) {

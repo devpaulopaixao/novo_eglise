@@ -75,7 +75,7 @@ class IgrejaController extends Controller
         $igreja = Igreja::find($request->session()->get('igreja_id'));
         $configuracao = $igreja->configuracao()->get();
         $endereco = $igreja->endereco()->get();
-        $menus = $igreja->menus()->where('menu_id',null)->orderBy('ordem','ASC')->get();
+        $menus = $igreja->menus()->where('menu_id', null)->orderBy('ordem', 'ASC')->get();
 
         return view('admin.igreja', compact('igreja', 'configuracao', 'endereco', 'menus'));
     }
@@ -85,14 +85,34 @@ class IgrejaController extends Controller
 
         try {
 
-            //dd($request->all());
-
             $igreja = Igreja::find($request->session()->get('igreja_id'));
 
-            //$igreja->configuracao()->delete();
+            if ($igreja->configuracao()->count() == 0) {
+                $igreja->configuracao()->create(
+                    $request->except('_token', 'cep', 'rua', 'numero', 'complemento', 'bairro', 'cidade', 'estado')
+                );
+            }
             $igreja->configuracao()->update(
                 $request->except('_token', 'cep', 'rua', 'numero', 'complemento', 'bairro', 'cidade', 'estado')
             );
+
+            if ($request->logotipo) {
+                //Salvando imagem em base64
+                $logo = base64_encode(file_get_contents($request->logotipo));
+
+                $igreja->configuracao()->update([
+                    'logotipo' => "data:image/" . $request->logotipo->getClientOriginalExtension() . ";base64," . $logo,
+                ]);
+            }
+
+            if ($request->favicon) {
+                //Salvando imagem em base64
+                $fav = base64_encode(file_get_contents($request->favicon));
+
+                $igreja->configuracao()->update([
+                    'favicon' => "data:image/" . $request->favicon->getClientOriginalExtension() . ";base64," . $fav,
+                ]);
+            }
 
             $igreja->endereco()->update([
                 "cep" => $request->cep,
@@ -101,7 +121,7 @@ class IgrejaController extends Controller
                 "complemento" => $request->complemento,
                 "bairro" => $request->bairro,
                 "cidade" => $request->cidade,
-                "estado" => $request->estado
+                "estado" => $request->estado,
             ]);
         } catch (\Exception $e) {
             //nothing

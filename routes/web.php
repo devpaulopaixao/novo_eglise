@@ -11,50 +11,60 @@ Route::get('/logout', function () {
     Session::flush();
     return redirect('login');
 });
-
-/*Route::get('/', function () {
-    return redirect('login');
-});*/
-
-Route::get('/', 'SiteController@inicio')->name('inicio');
-Route::get('/registre-se', 'SiteController@registrar')->name('registre-se');
-
+Route::get('/registre-se', 'PlataformaController@registrar')->name('registre-se');
 Route::post('/registrar', 'RegistrarController@registrar')->name('registrar');
 
+/*Route::get('/', function () {
+return redirect('login');
+});*/
 
-Route::group(['middleware' => ['auth']], function() {
-    Route::get('/home', 'HomeController@index')->name('home');
-    Route::post('/cadastrar-igreja', 'HomeController@cadastrarIgreja')->name('home.cadastrar-igreja');
+Route::group(['middleware' => ['web']], function () {
 
-    Route::get('/perfil', 'ProfileController@index')->name('perfil');
-    Route::post('/perfil/atualizar', 'ProfileController@update')->name('perfil.atualizar');
-    Route::post('/perfil/novasenha', 'ProfileController@novaSenha')->name('perfil.novasenha');
+    Route::get('/', 'PlataformaController@inicio')->name('inicio');
 
-    Route::resource('perfis','RoleController');
+    Route::get('/{url}', 'SiteController@inicio')->name('index');
 
-    Route::resource('usuarios','UserController');
-    Route::post('usuariosdoperfil','UserController@getUsersByRole')->name('usuarios.com.perfil');
+});
 
-    Route::get('/igreja', 'IgrejaController@igreja')->name('igreja');
-    Route::post('/igreja-configurar', 'IgrejaController@configurar')->name('igreja.configurar');
+Route::group(['middleware' => ['auth']], function () {
 
-    Route::get('/celulas', 'CelulaController@index')->name('celulas');
-    Route::post('/celulas/store', 'CelulaController@store')->name('celulas.store');
-    Route::post('/celulas/update', 'CelulaController@update')->name('celulas.update');
-    Route::get('/celulas/{id}/destroy', 'CelulaController@destroy')->name('celulas.destroy');
-    Route::post('/celulas/fetch_data', 'CelulaController@fetch_data')->name('celulas.fetch');
+    Route::group(['prefix' => 'admin'], function () {
+        Route::resource('perfis', 'RoleController');
+        Route::resource('usuarios', 'UserController');
+    });
 
-    Route::get('/igrejas', 'IgrejaController@index')->name('igrejas');
-    Route::post('/igrejas/store', 'IgrejaController@store')->name('igrejas.store');
-    Route::post('/igrejas/update', 'IgrejaController@update')->name('igrejas.update');
-    Route::get('/igrejas/{id}/destroy', 'IgrejaController@destroy')->name('igrejas.destroy');
-    Route::post('/igrejas/fetch_data', 'IgrejaController@fetch_data')->name('igrejas.fetch');
+    Route::group(['prefix' => 'usuario'], function () {
 
-    Route::get('/membros/conectar/{igreja_id}', 'MembrosController@conectar')->name('membros.conectar');
-    Route::get('/membros/desconectar/{igreja_id}', 'MembrosController@desconectar')->name('membros.desconectar');
+        Route::get('/home', 'HomeController@index')->name('home');
 
-    Route::post('/menus/create', 'MenusController@create')->name('menus.create');
-    Route::post('/menus/update', 'MenusController@update')->name('menus.update');
-    Route::get('/menus/{id}/destroy', 'MenusController@destroy')->name('menus.destroy');
+        Route::get('/perfil', 'ProfileController@index')->name('perfil');
+        Route::post('/perfil/atualizar', 'ProfileController@update')->name('perfil.atualizar');
+        Route::post('/perfil/novasenha', 'ProfileController@novaSenha')->name('perfil.novasenha');
+
+        Route::get('/igreja', 'IgrejaController@igreja')->name('igreja');
+        Route::post('/igreja-configurar', 'IgrejaController@configurar')->name('igreja.configurar');
+
+        Route::post('/cadastrar-igreja', 'HomeController@cadastrarIgreja')->name('home.cadastrar-igreja');
+
+        Route::get('/igrejas', 'IgrejaController@index')->name('igrejas');
+        Route::post('/igrejas/store', 'IgrejaController@store')->name('igrejas.store');
+        Route::post('/igrejas/update', 'IgrejaController@update')->name('igrejas.update');
+        Route::get('/igrejas/{id}/destroy', 'IgrejaController@destroy')->name('igrejas.destroy');
+        Route::post('/igrejas/fetch_data', 'IgrejaController@fetch_data')->name('igrejas.fetch');
+
+        Route::get('/celulas', 'CelulaController@index')->name('celulas');
+        Route::post('/celulas/store', 'CelulaController@store')->name('celulas.store');
+        Route::post('/celulas/update', 'CelulaController@update')->name('celulas.update');
+        Route::get('/celulas/{id}/destroy', 'CelulaController@destroy')->name('celulas.destroy');
+        Route::post('/celulas/fetch_data', 'CelulaController@fetch_data')->name('celulas.fetch');
+
+        Route::get('/membros/conectar/{igreja_id}', 'MembrosController@conectar')->name('membros.conectar');
+        Route::get('/membros/desconectar/{igreja_id}', 'MembrosController@desconectar')->name('membros.desconectar');
+
+        Route::post('/menus/create', 'MenusController@create')->name('menus.create');
+        Route::post('/menus/update', 'MenusController@update')->name('menus.update');
+        Route::get('/menus/{id}/destroy', 'MenusController@destroy')->name('menus.destroy');
+
+    });
 
 });

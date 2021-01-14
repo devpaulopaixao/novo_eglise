@@ -3,6 +3,7 @@
 use App\User;
 use App\Igreja;
 use App\Membros;
+use App\Template;
 use Illuminate\Database\Seeder;
 
 class IgrejaSeeder extends Seeder
@@ -14,6 +15,10 @@ class IgrejaSeeder extends Seeder
      */
     public function run()
     {
+        Template::create([
+            'nome' => 'Template Padrão',
+        ]);
+
         $user = User::find(2);
 
         $igreja = $user->igrejas()->create([

@@ -39,6 +39,14 @@ function getIgreja(Request $request){
     return \App\Igreja::find($request->session()->get('igreja_id'));
 }
 
+function getIdIgrejaByUrl($url){
+
+    $config = \App\ConfiguracaoIgreja::where('url', $url)->get()->pluck('igreja_id')[0];
+
+    return \App\Igreja::find($config);
+
+}
+
 function onlyNumbers($value)
 {
     return preg_replace( '/[^0-9]/', '', $value );

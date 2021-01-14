@@ -16,7 +16,7 @@ class CreateConfiguracaoIgrejasTable extends Migration
         Schema::create('configuracao_igrejas', function (Blueprint $table) {
             $table->id();
 
-            $table->string('url');
+            $table->string('url')->nullable();
             $table->string('youtube')->nullable();
             $table->string('twitter')->nullable();
             $table->string('facebook')->nullable();

@@ -44,7 +44,7 @@
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" data-slide="true" href="{{ url('/perfil') }}">
+                    <a class="nav-link" data-slide="true" href="{{route('perfil')}}">
                         <i class="fas fa-key"></i>
                     </a>
                 </li>

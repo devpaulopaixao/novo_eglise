@@ -21,7 +21,7 @@ class CreateCelulasTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
 
-            $table->unsignedBigInteger('igreja_id');
+            $table->unsignedBigInteger('igreja_id')->nullable();
             $table->foreign('igreja_id')->references('id')->on('igrejas');
 
             $table->timestamps();
