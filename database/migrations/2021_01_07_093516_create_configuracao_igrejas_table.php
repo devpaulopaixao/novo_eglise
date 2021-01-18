@@ -26,7 +26,7 @@ class CreateConfiguracaoIgrejasTable extends Migration
             $table->unsignedBigInteger('igreja_id')->nullable();
             $table->foreign('igreja_id')->references('id')->on('igrejas')->onDelete("cascade");
 
-            $table->unsignedBigInteger('template_id')->nullable();
+            $table->unsignedBigInteger('template_id')->default(1);
             $table->foreign('template_id')->references('id')->on('templates');
 
             $table->timestamps();

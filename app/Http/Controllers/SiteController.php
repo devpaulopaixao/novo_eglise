@@ -14,9 +14,11 @@ class SiteController extends Controller
      */
     public function inicio($url)
     {
-        $igreja = getIdIgrejaByUrl($url);
 
-        if(isset($igreja)){
+        $id = \App\ConfiguracaoIgreja::where('url', $url)->get()->pluck('igreja_id');
+
+        if(isset($id[0])){
+            $igreja = Igreja::find($id[0]);
             $config = $igreja->configuracao()->get();
 
             return view('layouts.templates.template' . $config[0]->template_id . '.index', compact('igreja','config'));

@@ -67,7 +67,7 @@ class UserController extends Controller
             'roles' => 'required',
         ]);
 
-        $input = $request->all();
+        $input = array_merge($request->all(), ['igreja_id' => $request->session()->get('igreja_id')]);
         $input['password'] = Hash::make($input['password']);
 
         $user = User::create($input);

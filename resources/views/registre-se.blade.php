@@ -47,6 +47,13 @@
                         'estado': {
                             required: true
                         },
+                        'senha': {
+                            required: true
+                        },
+                        'confirmacao': {
+                            required: true,
+                            equalTo : "#senha"
+                        },
                         'terms_accept': {
                             required: true
                         },
@@ -80,8 +87,12 @@
                         'estado': {
                             required: "Informe a UF"
                         },
-                        'estado': {
-                            required: "Informe a UF"
+                        'senha': {
+                            required: "Informe a senha"
+                        },
+                        'confirmacao': {
+                            required: "Confirme a senha",
+                            equalTo: "A confirmação está diferente da senha"
                         },
                         'terms_accept': "Leia e aceite os termos de serviço"
                     },
@@ -172,16 +183,24 @@
                                                         value="{{ old('cell') }}">
                                                 </div>
                                             </div>
-                                            <div class="col-xs-6 col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <strong>Fixo:</strong>
-                                                    <input type="text" name="phone" class="form-control"
-                                                        value="{{ old('phone') }}">
-                                                </div>
-                                            </div>
 
-                                            <x-endereco />
+                                        </div>
 
+                                        <div class="row">
+                                          <x-endereco />
+
+                                          <div class="col-xs-6 col-sm-12 col-md-5">
+                                              <div class="form-group">
+                                                  <strong>Senha:</strong>
+                                                  <input type="password" name="senha" id="senha" class="form-control" autocomplete="off">
+                                              </div>
+                                          </div>
+                                          <div class="col-xs-6 col-sm-12 col-md-5">
+                                              <div class="form-group">
+                                                  <strong>Confirmar senha:</strong>
+                                                  <input type="password" name="confirmacao" class="form-control" autocomplete="off">
+                                              </div>
+                                          </div>
                                         </div>
 
                                         <div class="row">
@@ -397,6 +416,13 @@
                             </p>
                         </div>
 
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="btn-group botao float-right" role="group">
+                        <button type="button" class="btn btn-sm btn-primary badge-pill" data-dismiss="modal">
+                            <i class="fas fa-times"></i>&nbsp;Fechar
+                        </button>
                     </div>
                 </div>
             </div>

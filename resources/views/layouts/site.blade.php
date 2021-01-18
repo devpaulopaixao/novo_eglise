@@ -113,8 +113,10 @@
                         
                         @if (\Request::session()->get('igreja_id'))
 
-                        @if(\Auth::user()->hasRole('Admin'))
-                            @include('layouts.menus.admin')
+                            @if(\Auth::user()->hasAnyRole('Admin'))
+                                @include('layouts.menus.admin')
+                            @endif
+
                         @endif
 
                         <li class="nav-item">
@@ -124,7 +126,7 @@
                                 <p>Células</p>
                             </a>
                         </li>
-                        @endif
+                        
 
                     </ul>
 

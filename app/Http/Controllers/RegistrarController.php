@@ -24,6 +24,7 @@ class RegistrarController extends Controller
                 //'cell' => 'required',
                 //'phone' => 'required',
                 'cep' => 'required',
+                'senha' => 'required',
                 'rua' => 'required',
                 'numero' => 'required',
                 'bairro' => 'required',
@@ -59,7 +60,7 @@ class RegistrarController extends Controller
 
             DB::beginTransaction();
 
-            $senha = Hash::make('123456');
+            $senha = Hash::make($request->senha);
 
             $user = User::create([
                 'name' => $request->name,

@@ -16,6 +16,7 @@ class CreateIgrejasTable extends Migration
         Schema::create('igrejas', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
+            $table->string('cnpj', 18);
             $table->text('sobre')->nullable();
             $table->text('telefone')->nullable();
 

@@ -31,6 +31,21 @@ class HomeController extends Controller
         return view('home');
     }
 
+    public function new()
+    {
+        return view('novo-produto');
+    }
+
+    public function newChurch()
+    {
+        return view('nova-igreja');
+    }
+    
+    public function beMember()
+    {
+        return view('ser-membro');
+    }
+
     public function cadastrarIgreja(Request $request)
     {
         try {
@@ -45,6 +60,7 @@ class HomeController extends Controller
 
             $igreja = Igreja::create([
                 'nome' => $request->nome,
+                'cnpj' => $request->cnpj,
                 'user_id' => $user->id,
             ]);
 

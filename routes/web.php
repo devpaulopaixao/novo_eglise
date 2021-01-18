@@ -11,6 +11,33 @@ Route::get('/logout', function () {
     Session::flush();
     return redirect('login');
 });
+
+Route::get('/hsy/schedule-run', function () {
+    $dir = env('APP_ENV') == 'local' ? '/home/hotsystems/Documentos/novo_eglise' : '/home/financeiramentepleno/www/projeto';
+    $command = "cd {$dir} && php artisan schedule:run > {$dir}/storage/logs/schedule-run.log";
+    $returnVar = null;
+    $output = null;
+    exec($command, $output, $returnVar);
+    if(!$returnVar){
+        dd('Schedule works!');
+    }else{
+        dd('Schedule failed');
+    }
+});
+
+Route::get('/hsy/queue-work', function () {
+    $dir = env('APP_ENV') == 'local' ? '/home/hotsystems/Documentos/novo_eglise' : '/home/financeiramentepleno/www/projeto';
+    $command = "cd {$dir} && nohup php artisan queue:work --once > {$dir}/storage/logs/queue-work.log";
+    $returnVar = null;
+    $output = null;
+    exec($command, $output, $returnVar);
+    if(!$returnVar){
+        dd('Queue works!');
+    }else{
+        dd('Queue failed');
+    }
+});
+
 Route::get('/registre-se', 'PlataformaController@registrar')->name('registre-se');
 Route::post('/registrar', 'RegistrarController@registrar')->name('registrar');
 
@@ -36,6 +63,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'usuario'], function () {
 
         Route::get('/home', 'HomeController@index')->name('home');
+
+        Route::get('/novo-produto', 'HomeController@new')->name('new.product');
+        Route::get('/nova-igreja', 'HomeController@newChurch')->name('new.church');
+        Route::get('/ser-membro', 'HomeController@beMember')->name('be.member');
 
         Route::get('/perfil', 'ProfileController@index')->name('perfil');
         Route::post('/perfil/atualizar', 'ProfileController@update')->name('perfil.atualizar');

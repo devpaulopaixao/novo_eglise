@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
@@ -31,5 +32,9 @@ class AppServiceProvider extends ServiceProvider
         ini_set('max_execution_time', '300');
         Carbon::setLocale('pt_BR');//Altera o idioma do texto diffForHumans;
         Schema::defaultStringLength(191);
+
+        if (env('APP_ENV') == 'production') {
+            URL::forceScheme('https');
+        }
     }
 }

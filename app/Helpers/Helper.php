@@ -41,9 +41,9 @@ function getIgreja(Request $request){
 
 function getIdIgrejaByUrl($url){
 
-    $config = \App\ConfiguracaoIgreja::where('url', $url)->get()->pluck('igreja_id')[0];
+    $id = \App\ConfiguracaoIgreja::where('url', $url)->get()->pluck('igreja_id')[0];
 
-    return \App\Igreja::find($config);
+    return \App\Igreja::find($id);
 
 }
 
