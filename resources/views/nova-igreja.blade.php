@@ -432,7 +432,7 @@
                                 <div id="test-form-2" role="tabpanel" class="bs-stepper-pane fade"
                                     aria-labelledby="stepperFormTrigger2">
                                     <!--boleto/crédito-->
-                                    <!--<div class="row">
+                                    <div class="row">
                                                 <div class="paymentCont">
                                                     <div class="paymentWrap">
                                                         <div class="btn-group paymentBtnGroup btn-group-justified"
@@ -452,8 +452,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>-->
-                                    <div class="form-group">
+                                            </div>
+                                    <!--<div class="form-group">
                                         <div class="icheck-primary icheck-inline">
                                             <input type="radio" id="boleto" name="flg_pgto" value="B" checked />
                                             <label for="boleto">Boleto</label>
@@ -462,7 +462,7 @@
                                             <input type="radio" id="cartao" name="flg_pgto" value="C" />
                                             <label for="cartao">Cartão</label>
                                         </div>
-                                    </div>
+                                    </div>-->
                                     <!--boleto/crédito-->
 
                                     <button type="button" class="btn btn-primary float-right"
