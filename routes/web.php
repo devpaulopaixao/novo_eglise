@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Request;
+
 Auth::routes([
     'register' => false, // Registration Routes...
     'reset' => true, // Password Reset Routes...
@@ -61,6 +63,12 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     Route::group(['prefix' => 'usuario'], function () {
+
+        Route::get('/opcao-cartao', function () {
+            return response()->json([
+                'html' => view('utils.opcao-cartao')->render(),
+            ]);
+        })->name('opcao.cartao');
 
         Route::get('/home', 'HomeController@index')->name('home');
 

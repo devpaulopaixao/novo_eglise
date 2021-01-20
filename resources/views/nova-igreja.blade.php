@@ -7,6 +7,59 @@
         <link rel="stylesheet" href="{{ asset('plugins/bs-stepper/bs-stepper.min.css') }}">
         <script src="{{ asset('plugins/bs-stepper/bs-stepper.min.js') }}"></script>
         <link rel="stylesheet" href="{{ asset('/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+        <style>
+            .paymentWrap {
+                padding: 50px;
+            }
+
+            .paymentWrap .paymentBtnGroup {
+                max-width: 800px;
+                margin: auto;
+            }
+
+            .paymentWrap .paymentBtnGroup .paymentMethod {
+                padding: 80px;
+                box-shadow: none;
+                position: relative;
+            }
+
+            .paymentWrap .paymentBtnGroup .paymentMethod.active {
+                outline: none !important;
+            }
+
+            .paymentWrap .paymentBtnGroup .paymentMethod.active .method {
+                border-color: #007bff;
+                outline: none !important;
+                box-shadow: 0px 3px 22px 0px #7b7b7b;
+            }
+
+            .paymentWrap .paymentBtnGroup .paymentMethod .method {
+                position: absolute;
+                right: 0px;
+                top: 3px;
+                bottom: 3px;
+                left: 3px;
+                background-size: contain;
+                background-position: center;
+                background-repeat: no-repeat;
+                border: 2px solid transparent;
+                transition: all 0.5s;
+            }
+
+            .paymentWrap .paymentBtnGroup .paymentMethod .method.boleto {
+                background-image: url("/img/boleto.png");
+            }
+
+            .paymentWrap .paymentBtnGroup .paymentMethod .method.cartao {
+                background-image: url("/img/cartao.png");
+            }
+
+            .paymentWrap .paymentBtnGroup .paymentMethod .method:hover {
+                border-color: #6610f2;
+                outline: none !important;
+            }
+
+        </style>
         <script>
             var Toast = Swal.mixin({
                 toast: true,
@@ -43,6 +96,40 @@
                             $("input[name='estado']").val(null);
                         }
                     });
+                }
+            });
+
+            $(document).on('change', "input[name='flg_pgto']", function() {
+                let opt = $(this).val();
+                switch (opt) {
+                    case 'C': //CARTÃO
+                        $.ajax({
+                            url: '/usuario/opcao-cartao',
+                            type: 'GET',
+                            success: function(data) {
+                                // handle success response
+                                $('#payment').empty().html(data.html);
+                            },
+                            error: function(data) {
+                                // nothing
+                            },
+                            contentType: false,
+                            processData: false
+                        });
+
+                        break;
+
+                    default: //BOLETO
+                        let html_boleto = "<div class='col-xs-6 col-sm-8 col-md-12'>" +
+                            "<div class='form-group'>" +
+                            "<strong>Endereçar o boleto à:</strong>" +
+                            "<select name='titular' class='form-control'>" +
+                            "<option value='J'>Igreja(CNPJ)</option>" +
+                            "<option value='F'>{{ \Auth::user()->name }}</option>" +
+                            "</select>" +
+                            "</div>" +
+                            "</div>";
+                        $('#payment').empty().html(html_boleto);
                 }
             });
 
@@ -99,10 +186,36 @@
                             }
                             break;
                         case 'test-form-2':
+                            //none
+                            break;
+                        case 'test-form-3':
                             /*if(!inputPasswordForm.value.length){
                               event.preventDefault()
                               form.classList.add('was-validated')
                             }*/
+                            let opt = $('input[name="flg_pgto"]:checked').val();
+                            //console.log($('input[name="flg_pgto"]:checked').val());
+                            switch (opt) {
+                                case 'C': //VALIDAÇÃO PARA CARTÃO
+                                    if (
+                                        !document.getElementById('cardname').value.length ||
+                                        !document.getElementById('cardnum').value.length ||
+                                        !document.getElementById('carddigito').value.length) {
+                                        event.preventDefault()
+                                        form.classList.add('was-validated')
+                                    }
+                                    break;
+                                default: //VALIDAÇÃO PARA BOLETO
+                                    //event.preventDefault()
+                                    form.classList.add('was-validated')
+                            }
+                            break;
+                        case 'test-form-4':
+                            if (!$('#terms_accept').is(':checked')) {
+                                event.preventDefault()
+                                form.classList.add('was-validated')
+                            }
+                            //terms_accept
                             break;
                         default:
 
@@ -181,11 +294,13 @@
             <div class="card-body">
 
                 <div class="mb-5 p-4 bg-white table-responsive">
+
                     <div id="stepperForm" class="bs-stepper">
                         <div class="bs-stepper-header" role="tablist">
+
                             <div class="step" data-target="#test-form-1">
                                 <button type="button" class="step-trigger" role="tab" id="stepperFormTrigger1"
-                                    aria-controls="test-form-1">
+                                    aria-controls="test-form-1" disabled>
                                     <span class="bs-stepper-circle">1</span>
                                     <span class="bs-stepper-label">Informações básicas</span>
                                 </button>
@@ -193,7 +308,7 @@
                             <div class="bs-stepper-line"></div>
                             <div class="step" data-target="#test-form-2">
                                 <button type="button" class="step-trigger" role="tab" id="stepperFormTrigger2"
-                                    aria-controls="test-form-2">
+                                    aria-controls="test-form-2" disabled>
                                     <span class="bs-stepper-circle">2</span>
                                     <span class="bs-stepper-label">Forma de pagamento</span>
                                 </button>
@@ -201,7 +316,7 @@
                             <div class="bs-stepper-line"></div>
                             <div class="step" data-target="#test-form-3">
                                 <button type="button" class="step-trigger" role="tab" id="stepperFormTrigger3"
-                                    aria-controls="test-form-3">
+                                    aria-controls="test-form-3" disabled>
                                     <span class="bs-stepper-circle">3</span>
                                     <span class="bs-stepper-label">Cobrança</span>
                                 </button>
@@ -209,7 +324,7 @@
                             <div class="bs-stepper-line"></div>
                             <div class="step" data-target="#test-form-4">
                                 <button type="button" class="step-trigger" role="tab" id="stepperFormTrigger4"
-                                    aria-controls="test-form-4">
+                                    aria-controls="test-form-4" disabled>
                                     <span class="bs-stepper-circle">4</span>
                                     <span class="bs-stepper-label">Termos de serviço</span>
                                 </button>
@@ -217,11 +332,12 @@
                             <div class="bs-stepper-line"></div>
                             <div class="step" data-target="#test-form-5">
                                 <button type="button" class="step-trigger" role="tab" id="stepperFormTrigger5"
-                                    aria-controls="test-form-5">
+                                    aria-controls="test-form-5" disabled>
                                     <span class="bs-stepper-circle">5</span>
                                     <span class="bs-stepper-label">Contratar</span>
                                 </button>
                             </div>
+
                         </div>
 
                         <div class="bs-stepper-content">
@@ -230,6 +346,7 @@
                                 action="{{ route('home.cadastrar-igreja') }}" novalidate autocomplete="off">
                                 <div id="test-form-1" role="tabpanel" class="bs-stepper-pane fade"
                                     aria-labelledby="stepperFormTrigger1">
+
                                     <div class="row">
                                         <div class="col-xs-6 col-sm-8 col-md-12">
                                             <div class="form-group">
@@ -315,52 +432,106 @@
                                 <div id="test-form-2" role="tabpanel" class="bs-stepper-pane fade"
                                     aria-labelledby="stepperFormTrigger2">
                                     <!--boleto/crédito-->
+                                    <!--<div class="row">
+                                                <div class="paymentCont">
+                                                    <div class="paymentWrap">
+                                                        <div class="btn-group paymentBtnGroup btn-group-justified"
+                                                            data-toggle="buttons">
+                                                            <div class="col-md-4">
+                                                                <label class="btn paymentMethod active">
+                                                                    <div class="method boleto"></div>
+                                                                    <input type="radio" name="flg_pgto" value="B" checked>
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label class="btn paymentMethod ml-4">
+                                                                    <div class="method cartao"></div>
+                                                                    <input type="radio" name="flg_pgto" value="C">
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>-->
                                     <div class="form-group">
                                         <div class="icheck-primary icheck-inline">
-                                            <input type="radio" id="boleto" name="forma_pgto" checked/>
+                                            <input type="radio" id="boleto" name="flg_pgto" value="B" checked />
                                             <label for="boleto">Boleto</label>
                                         </div>
                                         <div class="icheck-primary icheck-inline">
-                                            <input type="radio" id="cartao" name="forma_pgto"/>
+                                            <input type="radio" id="cartao" name="flg_pgto" value="C" />
                                             <label for="cartao">Cartão</label>
                                         </div>
                                     </div>
                                     <!--boleto/crédito-->
 
                                     <button type="button" class="btn btn-primary float-right"
-                                        onclick="stepperForm.previous()">Anterior</button>
-                                    <button type="button" class="btn btn-primary float-right"
                                         onclick="stepperForm.next()">Próximo</button>
+                                    <button type="button" class="btn btn-primary float-right"
+                                        onclick="stepperForm.previous()">Anterior</button>
                                 </div>
 
-                                <div id="test-form-3" role="tabpanel" class="bs-stepper-pane fade text-center"
+                                <div id="test-form-3" role="tabpanel" class="bs-stepper-pane fade"
                                     aria-labelledby="stepperFormTrigger3">
-                                    <button type="button" class="btn btn-primary float-right"
-                                        onclick="stepperForm.previous()">Anterior</button>
+
+                                    <div class="row" id="payment">
+                                        <div class="col-xs-6 col-sm-8 col-md-12">
+                                            <div class="form-group">
+                                                <strong>Endereçar o boleto à:</strong>
+                                                <select name="titular" class="form-control">
+                                                    <option value="J">Igreja(CNPJ)</option>
+                                                    <option value="F">{{ \Auth::user()->name }}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <button type="button" class="btn btn-primary float-right"
                                         onclick="stepperForm.next()">Próximo</button>
+                                    <button type="button" class="btn btn-primary float-right"
+                                        onclick="stepperForm.previous()">Anterior</button>
                                 </div>
 
-                                <div id="test-form-4" role="tabpanel" class="bs-stepper-pane fade text-center"
+                                <div id="test-form-4" role="tabpanel" class="bs-stepper-pane fade"
                                     aria-labelledby="stepperFormTrigger4">
-                                    <button type="button" class="btn btn-primary float-right"
-                                        onclick="stepperForm.previous()">Anterior</button>
+
+                                    <div class="row">
+                                        @include('termos-eglise')
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" name="terms_accept" class="custom-control-input"
+                                                id="terms_accept" required>
+                                            <label class="custom-control-label" for="terms_accept"> Eu aceito
+                                                os <a href="#">termos de
+                                                    serviço</a>.</label>
+                                            <div class="invalid-feedback">Leia e ceite os termos de serviço</div>
+                                        </div>
+                                    </div>
+
                                     <button type="button" class="btn btn-primary float-right"
                                         onclick="stepperForm.next()">Próximo</button>
-                                </div>
-
-                                <div id="test-form-5" role="tabpanel" class="bs-stepper-pane fade text-center"
-                                    aria-labelledby="stepperFormTrigger3">
                                     <button type="button" class="btn btn-primary float-right"
                                         onclick="stepperForm.previous()">Anterior</button>
-                                    <button type="submit" class="btn btn-primary float-right mt-5">Submit</button>
+                                </div>
+
+                                <div id="test-form-5" role="tabpanel" class="bs-stepper-pane fade"
+                                    aria-labelledby="stepperFormTrigger3">
+
+                                    <div class="row">
+                                        @include('utils.htm-contrato')
+                                    </div>
+
+                                    <button type="submit" class="btn btn-success float-right">Confirmar</button>
+                                    <button type="button" class="btn btn-primary float-right"
+                                        onclick="stepperForm.previous()">Anterior</button>
                                 </div>
 
                             </form>
 
                         </div>
                     </div>
-
 
                 </div>
 
