@@ -72,6 +72,22 @@
 
             $('input[name="cep"]').mask('00.000-000');
 
+            $(document).on('change', ".htm-contrato", function() {
+                let name = $(this).attr('name');
+                let value = this.value;
+                switch (value) {
+                    case 'B':
+                    $('#htm_' + name).html('boleto bancário');
+                        break;
+                    case 'C':
+                    $('#htm_' + name).html('cartão de crédito');
+                        break;                
+                    default:
+                    $('#htm_' + name).html(value);
+                        break;
+                }
+            });            
+
             $(document).on('blur', "input[name='cep']", function() {
                 var parser = /^[0-9]{8}$/;
                 var cep = $(this).val().replace(/\D/g, '');
@@ -351,7 +367,7 @@
                                         <div class="col-xs-6 col-sm-8 col-md-12">
                                             <div class="form-group">
                                                 <strong>Nome:</strong>
-                                                <input type="text" class="form-control" name="nome" id="nome"
+                                                <input type="text" class="form-control htm-contrato" name="nome" id="nome"
                                                     placeholder="Informe o nome da igreja" required>
                                                 <div class="invalid-feedback">Informe o nome da igreja</div>
                                             </div>
@@ -384,14 +400,14 @@
                                         <div class="col-xs-6 col-sm-12 col-md-8">
                                             <div class="form-group">
                                                 <strong>Rua:</strong>
-                                                <input type="text" name="rua" id="rua" class="form-control" required>
+                                                <input type="text" name="rua" id="rua" class="form-control htm-contrato" required>
                                                 <div class="invalid-feedback">Informe a rua</div>
                                             </div>
                                         </div>
                                         <div class="col-xs-6 col-sm-12 col-md-3">
                                             <div class="form-group">
                                                 <strong>Número:</strong>
-                                                <input type="text" name="numero" id="numero" class="form-control" required>
+                                                <input type="text" name="numero" id="numero" class="form-control htm-contrato" required>
                                                 <div class="invalid-feedback">Informe o número</div>
                                             </div>
                                         </div>
@@ -404,21 +420,21 @@
                                         <div class="col-xs-6 col-sm-12 col-md-6">
                                             <div class="form-group">
                                                 <strong>Bairro:</strong>
-                                                <input type="text" name="bairro" id="bairro" class="form-control" required>
+                                                <input type="text" name="bairro" id="bairro" class="form-control htm-contrato" required>
                                                 <div class="invalid-feedback">Informe o bairro</div>
                                             </div>
                                         </div>
                                         <div class="col-xs-6 col-sm-12 col-md-6">
                                             <div class="form-group">
                                                 <strong>Cidade:</strong>
-                                                <input type="text" name="cidade" id="cidade" class="form-control" required>
+                                                <input type="text" name="cidade" id="cidade" class="form-control htm-contrato" required>
                                                 <div class="invalid-feedback">Informe a cidade</div>
                                             </div>
                                         </div>
                                         <div class="col-xs-6 col-sm-12 col-md-2">
                                             <div class="form-group">
                                                 <strong>UF:</strong>
-                                                <input type="text" name="estado" id="estado" class="form-control"
+                                                <input type="text" name="estado" id="estado" class="form-control htm-contrato"
                                                     maxlength="2" required>
                                                 <div class="invalid-feedback">Informe o estado</div>
                                             </div>
@@ -440,13 +456,13 @@
                                                             <div class="col-md-4">
                                                                 <label class="btn paymentMethod active">
                                                                     <div class="method boleto"></div>
-                                                                    <input type="radio" name="flg_pgto" value="B" checked>
+                                                                    <input type="radio" name="flg_pgto" class="htm-contrato" value="B" checked>
                                                                 </label>
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label class="btn paymentMethod ml-4">
                                                                     <div class="method cartao"></div>
-                                                                    <input type="radio" name="flg_pgto" value="C">
+                                                                    <input type="radio" name="flg_pgto" class="htm-contrato" value="C">
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -467,7 +483,7 @@
 
                                     <button type="button" class="btn btn-primary float-right"
                                         onclick="stepperForm.next()">Próximo</button>
-                                    <button type="button" class="btn btn-primary float-right"
+                                    <button type="button" class="btn btn-primary float-right mr-2"
                                         onclick="stepperForm.previous()">Anterior</button>
                                 </div>
 
@@ -488,7 +504,7 @@
 
                                     <button type="button" class="btn btn-primary float-right"
                                         onclick="stepperForm.next()">Próximo</button>
-                                    <button type="button" class="btn btn-primary float-right"
+                                    <button type="button" class="btn btn-primary float-right mr-2"
                                         onclick="stepperForm.previous()">Anterior</button>
                                 </div>
 
@@ -512,7 +528,7 @@
 
                                     <button type="button" class="btn btn-primary float-right"
                                         onclick="stepperForm.next()">Próximo</button>
-                                    <button type="button" class="btn btn-primary float-right"
+                                    <button type="button" class="btn btn-primary float-right mr-2"
                                         onclick="stepperForm.previous()">Anterior</button>
                                 </div>
 
@@ -524,7 +540,7 @@
                                     </div>
 
                                     <button type="submit" class="btn btn-success float-right">Confirmar</button>
-                                    <button type="button" class="btn btn-primary float-right"
+                                    <button type="button" class="btn btn-primary float-right mr-2"
                                         onclick="stepperForm.previous()">Anterior</button>
                                 </div>
 
