@@ -69,6 +69,7 @@
             });
 
             $("#cnpj").mask("99.999.999/9999-99");
+            $("#telefone").mask("(99) 99999-9999");
 
             $('input[name="cep"]').mask('00.000-000');
 
@@ -243,8 +244,6 @@
                 e.preventDefault();
                 var formData = new FormData(this);
 
-                alert('Dispatch!');
-
                 if (!$(this).valid()) {
                     e.stopPropagation();
                 } else {
@@ -254,7 +253,7 @@
                         data: formData,
                         success: function(data) {
                             // handle success response
-                            window.location.href = "{{ route('new.product') }}";
+                            window.location.href = "{{ route('home') }}";
                         },
                         error: function(data) {
                             // handle error response

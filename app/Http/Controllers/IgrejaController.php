@@ -148,6 +148,8 @@ class IgrejaController extends Controller
 
             $igreja = Igreja::create([
                 'nome' => $request->nome,
+                'cnpj' => $request->cnpj,
+                'telefone' => $request->telefone,
                 'user_id' => Auth::user()->id,
             ]);
 

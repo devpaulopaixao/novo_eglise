@@ -61,6 +61,7 @@ class HomeController extends Controller
             $igreja = Igreja::create([
                 'nome' => $request->nome,
                 'cnpj' => $request->cnpj,
+                'telefone' => $request->telefone,
                 'user_id' => $user->id,
             ]);
 

@@ -24,6 +24,7 @@ class IgrejaSeeder extends Seeder
         $igreja = $user->igrejas()->create([
             'nome' => 'Primeira Igreja Batista do Oeste',
             'sobre' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',
+            'cnpj' => '09.236.454/0001-30',
             'telefone' => '31 93848-6771',
         ]);
 
